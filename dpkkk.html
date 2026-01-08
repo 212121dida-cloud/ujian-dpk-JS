@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DPKKK JS</title>
+</head>
+<body>
+
+<script>
+const tarifKm = 5000
+
+let jmlOrder = prompt("masukin jumlah order : ")
+jmlOrder = parseInt(jmlOrder)
+
+let data = []
+let totOrder = 0
+let totPot = 0
+let totTambahan = 0
+let totAkhir = 0
+
+let nama, jarak, sesi, cuaca
+
+for (let i = 0; i < jmlOrder; i++) {
+
+  nama = prompt("nama pelanggan ke "+ (i+1))
+  jarak = prompt("jarak (km) : ")
+  jarak = parseFloat(jarak)
+
+  sesi = prompt("sesi (pagi/siang/malam) : ")
+  cuaca = prompt("cuaca (cerah/hujan/banjir) : ")
+
+  data.push({
+    nama:nama,
+    jarak:jarak,
+    sesi:sesi,
+    cuaca:cuaca
+  })
+
+  let tarifDasar = jarak * tarifKm
+
+  let potJarak = 0
+
+  if (jarak < 5){
+    potJarak = 0
+  } else if (jarak >= 5 && jarak <= 10){
+    let km5 = 5
+    let km15 = jarak - km5
+    let sisaTarif = km15 * tarifKm
+    let disk15 = sisaTarif * 0.15
+    potJarak = disk15
+  } else {
+    let km5a = 5
+    let km5b = 5
+    let km25 = jarak - 10
+
+    let tarif5a = km5a * tarifKm
+    let tarif5b = km5b * tarifKm
+    let tarif25 = km25 * tarifKm
+
+    let disk15b = tarif5b * 0.15
+    let disk25 = tarif25 * 0.25
+
+    potJarak = disk15b + disk25
+  }
+
+  let potSesi = 0
+
+  if (sesi == "pagi"){
+    potSesi = 0
+  } else if (sesi == "malam"){
+    potSesi = tarifDasar * 0.05
+  } else {
+    potJarak = 0
+    potSesi = 0
+  }
+
+  let biayaCuaca = 0
+  if (cuaca == "cerah"){
+    biayaCuaca = 0
+  } else if (cuaca == "hujan"){
+    biayaCuaca = tarifDasar * 0.10
+  } else if (cuaca == "banjir"){
+    biayaCuaca = tarifDasar * 0.20
+  } else {
+    biayaCuaca = 0
+  }
+
+  let potTotal = potJarak + potSesi
+
+  let tarifAkhir = tarifDasar - potTotal + biayaCuaca
+
+  totOrder = totOrder + 1
+  totPot = totPot + potTotal
+  totTambahan = totTambahan + biayaCuaca
+  totAkhir = totAkhir + tarifAkhir
+
+  console.log("ORDER ke "+ (i+1))
+  console.log("nama : " + nama)
+  console.log("jarak : " + jarak + " km")
+  console.log("sesi : " + sesi)
+  console.log("cuaca : " + cuaca)
+  console.log("tarif dasar : " + tarifDasar)
+  console.log("potongan jarak : " + potJarak)
+  console.log("potongan sesi : " + potSesi)
+  console.log("biaya cuaca : " + biayaCuaca)
+  console.log("tarif akhir : " + tarifAkhir)
+  console.log("-------------")
+}
+
+let rata = 0
+if (totOrder > 0){
+  rata = totAkhir / totOrder
+}
+
+console.log("REKAP")
+console.log("total order : " + totOrder)
+console.log("total potongan : " + totPot)
+console.log("total biaya tambahan : " + totTambahan)
+console.log("total pendapatan akhir : " + totAkhir)
+console.log("rata rata per order : " + rata)
+
+</script>
+
+</body>
+</html>
